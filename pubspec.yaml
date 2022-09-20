@@ -33,6 +33,7 @@ dependencies:
   sqflite:
   path:
 
+  flutter_hooks:
   hooks_riverpod:
   state_notifier:
 
