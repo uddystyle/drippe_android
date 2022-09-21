@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+final stopWatchProvider = ChangeNotifierProvider((ref) => StopWatchModel());
 
 class StopWatchModel extends ChangeNotifier {
   bool isStopPressed = true;
@@ -17,11 +20,11 @@ class StopWatchModel extends ChangeNotifier {
   //   alarmList = await AlarmProvider.getData();
   // }
 
-  startTimer() {
+  void startTimer() {
     Timer(duration, keepRunning);
   }
 
-  keepRunning() {
+  void keepRunning() {
     if (swatch.isRunning) {
       startTimer();
     }
@@ -33,7 +36,7 @@ class StopWatchModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  startStopWatch() {
+  void startStopWatch() {
     isStopPressed = false;
     isStartPressed = true;
     swatch.start();
@@ -41,14 +44,14 @@ class StopWatchModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  stopStopWatch() {
+  void stopStopWatch() {
     isStopPressed = true;
     isResetPressed = false;
     swatch.stop();
     notifyListeners();
   }
 
-  resetStopWatch() {
+  void resetStopWatch() {
     isResetPressed = true;
     isStartPressed = true;
     swatch.reset();

@@ -46,9 +46,6 @@ class RecipeViewModelProvider extends StateNotifier<RecipeState> {
     final newRecipes =
         state.recipes.map((e) => e.id == newRecipe.id ? newRecipe : e).toList();
 
-    print('new recipes====================');
-    print(newRecipes);
-
     state = state.copyWith(
       recipes: newRecipes,
     );
