@@ -1,12 +1,9 @@
-import 'package:drippe/models/recipe.dart';
-import 'package:drippe/models/stop_watch.dart';
+import 'package:drippe/viewModels/stopWatch_view_model.dart';
 import 'package:drippe/viewModels/drippe_view_model.dart';
 import 'package:drippe/viewModels/recipe_view_model.dart';
-import 'package:drippe/viewModels/test_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 const double _kItemExtent = 32.0;
@@ -44,7 +41,7 @@ class DrippeScreen extends HookConsumerWidget {
 
   Widget _drippeScreen(context, ref) {
     final recipeState = ref.watch(recipeViewModelProvider);
-    final ratioTest = ref.watch(testViewModelProvider);
+    final drippeState = ref.watch(drippeViewModelProvider);
 
     // _drippeViewModel.setRef(ref);
     return Column(
@@ -80,7 +77,7 @@ class DrippeScreen extends HookConsumerWidget {
                           ),
                           controller: beanController,
                           onChanged: (String value) {
-                            ratioTest.setBean(value);
+                            drippeState.setBean(value);
                           },
                         ),
                       ),
@@ -129,9 +126,9 @@ class DrippeScreen extends HookConsumerWidget {
               onSelectedItemChanged: (int selectedItem) {
                 // 選択されたインデックスが返ってくる
                 _selectedIndex = selectedItem;
-                ratioTest.setIndex(_selectedIndex);
-                ratio = recipeState.recipes[ratioTest.index].ratio;
-                ratioTest.setRatio(ratio);
+                drippeState.setIndex(_selectedIndex);
+                ratio = recipeState.recipes[drippeState.index].ratio;
+                drippeState.setRatio(ratio);
               },
               children: List<Widget>.generate(recipeState.recipes.length,
                   (int index) {
@@ -151,7 +148,7 @@ class DrippeScreen extends HookConsumerWidget {
           child: Text(
             recipeState.recipes.isEmpty
                 ? 'レシピを作成してください'
-                : '比率 ${ratioTest.ratio}',
+                : '比率 ${drippeState.ratio}',
             // : "",
             style: Theme.of(context).textTheme.button,
           ),
