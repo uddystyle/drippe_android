@@ -37,6 +37,9 @@ dependencies:
   hooks_riverpod:
   state_notifier:
 
+  shared_preferences:
+  settings_ui:
+
   audioplayers: ^0.20.1
 
   freezed_annotation:

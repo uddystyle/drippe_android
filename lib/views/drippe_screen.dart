@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const double _kItemExtent = 32.0;
 
@@ -19,10 +20,20 @@ class DrippeScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // useEffect(() {
+    //   AlarmProvider.setDb();
+    //   final prefs = SharedPreferences.getInstance();
+    //   _selectedIndex = prefs.getInt('index')!;
+    //   return null;
+    // }, const []);
+
     useEffect(() {
-      AlarmProvider.setDb();
+      Future<void>.microtask(() async {
+        AlarmProvider.setDb();
+      });
       return null;
     }, const []);
+
     return Scaffold(
       body: _drippeScreen(context, ref),
     );
@@ -155,7 +166,6 @@ class DrippeScreen extends HookConsumerWidget {
             recipeState.recipes.isEmpty
                 ? 'レシピを作成してください'
                 : '比率 ${drippeState.ratio}',
-            // : "",
             style: Theme.of(context).textTheme.button,
           ),
         ),
