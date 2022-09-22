@@ -1,9 +1,12 @@
+import 'package:drippe/viewModels/alarm_view_model.dart';
+import 'package:drippe/viewModels/sound_logic.dart';
 import 'package:drippe/viewModels/stopWatch_view_model.dart';
 import 'package:drippe/viewModels/drippe_view_model.dart';
 import 'package:drippe/viewModels/recipe_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 const double _kItemExtent = 32.0;
@@ -14,9 +17,14 @@ class DrippeScreen extends HookConsumerWidget {
   int get waterAmount => int.parse(beanController.text) * int.parse(ratio);
   int _selectedIndex = 0;
   String ratio = '16';
+  List alarmList = [];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // useEffect(() {
+    //   final alarmState = ref.watch(alarmViewModelProvider);
+    //   return null;
+    // }, const []);
     return Scaffold(
       body: _drippeScreen(context, ref),
     );
@@ -42,6 +50,9 @@ class DrippeScreen extends HookConsumerWidget {
   Widget _drippeScreen(context, ref) {
     final recipeState = ref.watch(recipeViewModelProvider);
     final drippeState = ref.watch(drippeViewModelProvider);
+    final stopWatchState = ref.watch(stopWatchProvider);
+    // final alarmState = ref.watch(alarmViewModelProvider);
+    // final SoundLogic _soundLogic = SoundLogic();
 
     // _drippeViewModel.setRef(ref);
     return Column(
@@ -154,7 +165,7 @@ class DrippeScreen extends HookConsumerWidget {
           ),
         ),
         const SizedBox(height: 20.0),
-        Text(ref.watch(stopWatchProvider).stopWatchTimeDisplay,
+        Text(stopWatchState.stopWatchTimeDisplay,
             style: const TextStyle(fontSize: 88, fontWeight: FontWeight.w200)),
         Padding(
           padding: const EdgeInsets.all(20.0),
@@ -162,20 +173,20 @@ class DrippeScreen extends HookConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               OutlinedButton(
-                onPressed: ref.watch(stopWatchProvider).isStopPressed
-                    ? ref.watch(stopWatchProvider).resetStopWatch
-                    : ref.watch(stopWatchProvider).stopStopWatch,
+                onPressed: stopWatchState.isStopPressed
+                    ? stopWatchState.resetStopWatch
+                    : stopWatchState.stopStopWatch,
                 style: ElevatedButton.styleFrom(
                     shape: const CircleBorder(),
                     padding: const EdgeInsets.all(32)),
                 child: Text(
-                  ref.watch(stopWatchProvider).isStopPressed ? "リセット" : "ストップ",
+                  stopWatchState.isStopPressed ? "リセット" : "ストップ",
                   style: Theme.of(context).textTheme.button,
                 ),
               ),
               OutlinedButton(
-                onPressed: ref.watch(stopWatchProvider).isStartPressed
-                    ? ref.watch(stopWatchProvider).startStopWatch
+                onPressed: stopWatchState.isStartPressed
+                    ? stopWatchState.startStopWatch
                     : null,
                 style: ElevatedButton.styleFrom(
                     shape: const CircleBorder(),

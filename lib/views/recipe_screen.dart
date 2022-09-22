@@ -49,7 +49,7 @@ class RecipeScreen extends HookConsumerWidget {
                       children: [
                         SlidableAction(
                           onPressed: (value) async {
-                            await recipeViewModel.deleteRecipe(recipe.id!);
+                            await recipeViewModel.deleteRecipe(recipe.id);
                           },
                           label: '削除',
                           backgroundColor: Colors.red,
