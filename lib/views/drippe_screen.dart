@@ -1,5 +1,4 @@
 import 'package:drippe/viewModels/alarm_view_model.dart';
-import 'package:drippe/viewModels/sound_logic.dart';
 import 'package:drippe/viewModels/stopWatch_view_model.dart';
 import 'package:drippe/viewModels/drippe_view_model.dart';
 import 'package:drippe/viewModels/recipe_view_model.dart';
@@ -17,14 +16,13 @@ class DrippeScreen extends HookConsumerWidget {
   int get waterAmount => int.parse(beanController.text) * int.parse(ratio);
   int _selectedIndex = 0;
   String ratio = '16';
-  List alarmList = [];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // useEffect(() {
-    //   final alarmState = ref.watch(alarmViewModelProvider);
-    //   return null;
-    // }, const []);
+    useEffect(() {
+      AlarmProvider.setDb();
+      return null;
+    }, const []);
     return Scaffold(
       body: _drippeScreen(context, ref),
     );
@@ -51,10 +49,7 @@ class DrippeScreen extends HookConsumerWidget {
     final recipeState = ref.watch(recipeViewModelProvider);
     final drippeState = ref.watch(drippeViewModelProvider);
     final stopWatchState = ref.watch(stopWatchProvider);
-    // final alarmState = ref.watch(alarmViewModelProvider);
-    // final SoundLogic _soundLogic = SoundLogic();
 
-    // _drippeViewModel.setRef(ref);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

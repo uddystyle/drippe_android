@@ -1,15 +1,12 @@
 import 'dart:async';
 
 import 'package:drippe/models/alarm.dart';
-import 'package:drippe/viewModels/alarm_provider.dart';
 import 'package:drippe/viewModels/alarm_view_model.dart';
 import 'package:drippe/viewModels/sound_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final stopWatchProvider = ChangeNotifierProvider((ref) => StopWatchModel());
-// final alarmListProvider =
-//     StateProvider((ref) => ref.watch(alarmViewModelProvider));
 
 class StopWatchModel extends ChangeNotifier {
   bool isStopPressed = true;
@@ -19,17 +16,14 @@ class StopWatchModel extends ChangeNotifier {
   String stopWatchTimeDisplay = "00:00";
   var swatch = Stopwatch();
   final duration = const Duration(seconds: 1);
-
   final SoundLogic _soundLogic = SoundLogic();
   List<Alarm> alarmList = [];
 
   Future<void> reBuild() async {
-    // alarmList = await alarmListProvider.alarms;
-    // alarmList = await AlarmProvider.getData();
+    alarmList = await AlarmProvider.getData();
   }
 
   void startTimer() {
-    reBuild();
     Timer(duration, keepRunning);
   }
 
@@ -37,7 +31,6 @@ class StopWatchModel extends ChangeNotifier {
     if (swatch.isRunning) {
       startTimer();
     }
-    _soundLogic.load;
     stopWatchTimeDisplay =
         "${(swatch.elapsed.inMinutes % 60).toString().padLeft(2, "0")}:${(swatch.elapsed.inSeconds % 60).toString().padLeft(2, "0")}";
     ringAlarm();
@@ -48,6 +41,8 @@ class StopWatchModel extends ChangeNotifier {
     isStopPressed = false;
     isStartPressed = true;
     swatch.start();
+    _soundLogic.load;
+    reBuild();
     startTimer();
     notifyListeners();
   }

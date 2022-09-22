@@ -1,12 +1,11 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+class Alarm {
+  int id;
+  Duration alarmTime;
+  bool isActive;
 
-part 'alarm.freezed.dart';
-
-@freezed
-abstract class Alarm with _$Alarm {
-  const factory Alarm({
-    int? id,
-    @Default(Duration(minutes: 0, seconds: 0)) Duration alarmTime,
-    @JsonKey(name: 'is_active') @Default(true) bool isActive,
-  }) = _Alarm;
+  Alarm({
+    this.id = 0,
+    required this.alarmTime,
+    this.isActive = true,
+  });
 }

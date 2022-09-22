@@ -2,25 +2,24 @@ import 'package:drippe/models/alarm.dart';
 import 'package:drippe/viewModels/alarm_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AddEditAlarmScreen extends ConsumerStatefulWidget {
+class AddEditAlarmScreen extends StatefulWidget {
   final List<Alarm> alarmList;
   final int? index;
   AddEditAlarmScreen(this.alarmList, {this.index});
 
   @override
-  ConsumerState<AddEditAlarmScreen> createState() => _AddEditAlarmScreenState();
+  State<AddEditAlarmScreen> createState() => _AddEditAlarmPageState();
 }
 
-class _AddEditAlarmScreenState extends ConsumerState<AddEditAlarmScreen> {
+class _AddEditAlarmPageState extends State<AddEditAlarmScreen> {
   TextEditingController controller = TextEditingController();
 
   Duration duration = const Duration(minutes: 10, seconds: 00);
 
   void initEditAlarm() {
     if (widget.index != null) {
-      duration = widget.alarmList[widget.index!].alarmTime as Duration;
+      duration = widget.alarmList[widget.index!].alarmTime;
       controller.text = formatDuration(duration);
       setState(() {});
     }
@@ -38,7 +37,6 @@ class _AddEditAlarmScreenState extends ConsumerState<AddEditAlarmScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final alarmViewModel = ref.watch(alarmViewModelProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 100,
@@ -46,7 +44,7 @@ class _AddEditAlarmScreenState extends ConsumerState<AddEditAlarmScreen> {
         leading: GestureDetector(
           child: Container(
             alignment: Alignment.center,
-            child: const Text('キャンセル', style: TextStyle(color: Colors.orange)),
+            child: const Text("キャンセル", style: TextStyle(color: Colors.orange)),
           ),
           onTap: () {
             Navigator.pop(context);
@@ -57,33 +55,31 @@ class _AddEditAlarmScreenState extends ConsumerState<AddEditAlarmScreen> {
             child: Container(
               padding: const EdgeInsets.only(right: 20),
               alignment: Alignment.center,
-              child: const Text('保存', style: TextStyle(color: Colors.orange)),
+              child: const Text("保存", style: TextStyle(color: Colors.orange)),
             ),
             onTap: () async {
+              Alarm alarm = Alarm(
+                  alarmTime: Duration(
+                      minutes: duration.inMinutes.remainder(60),
+                      seconds: duration.inSeconds.remainder(60)));
               // 編集中の場合
               if (widget.index != null) {
-                Alarm alarm = Alarm(
-                    id: widget.alarmList[widget.index!].id,
-                    alarmTime: Duration(
-                        minutes: duration.inMinutes.remainder(60),
-                        seconds: duration.inSeconds.remainder(60)));
-                await alarmViewModel.updateAlarm(alarm);
+                alarm.id = widget.alarmList[widget.index!].id;
+                await AlarmProvider.updateData(alarm);
               } else {
                 // 追加の場合
-                Alarm alarm = Alarm(
-                    alarmTime: Duration(
-                        minutes: duration.inMinutes.remainder(60),
-                        seconds: duration.inSeconds.remainder(60)));
-                await alarmViewModel.addAlarm(alarm.alarmTime);
+                await AlarmProvider.insertData(alarm);
               }
               Navigator.pop(context);
             },
           )
         ],
+        // backgroundColor: Colors.white,
         title: widget.index != null ? Text("アラームを編集") : Text("アラームを追加"),
       ),
       body: Container(
         height: double.infinity,
+        // color: Colors.white,
         child: Column(
           children: [
             const SizedBox(height: 50),
@@ -110,7 +106,9 @@ class _AddEditAlarmScreenState extends ConsumerState<AddEditAlarmScreen> {
                           initialTimerDuration: duration,
                           mode: CupertinoTimerPickerMode.ms,
                           onTimerDurationChanged: (Duration newDuration) {
-                            String time = formatDuration(newDuration);
+                            String time =
+                                // "${newDuration.inMinutes.remainder(60).toString().padLeft(2, "0")}:${newDuration.inSeconds.remainder(60).toString().padLeft(2, "0")}";
+                                formatDuration(newDuration);
                             controller.text = time;
                             setState(() => duration = newDuration);
                           },

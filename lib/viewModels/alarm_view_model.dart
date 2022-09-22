@@ -1,34 +1,35 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:drippe/models/alarm.dart';
-import 'package:drippe/databases/alarm_database.dart';
-import 'package:drippe/repositories/alarm_repository.dart';
-import 'package:drippe/states/alarm_state.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
-final alarmViewModelProvider = StateNotifierProvider(
-  (ref) => AlarmViewModelProvider(
-    ref.read,
-    AlarmRepository(AlarmDatabase()),
-  ),
-);
+class AlarmProvider {
+  static Database? database;
+  static const String tableName = 'alarm';
 
-class AlarmViewModelProvider extends StateNotifier<AlarmState> {
-  AlarmViewModelProvider(this._reader, this._alarmRepository)
-      : super(const AlarmState()) {
-    getAlarm();
+  static Future<void> _createTable(Database db, int version) async {
+    await db.execute(
+        'CREATE TABLE $tableName(id INTEGER PRIMARY KEY AUTOINCREMENT, alarm_time TEXT, is_active INTEGER)');
   }
 
-  final Reader _reader;
-  final AlarmRepository _alarmRepository;
+  static Future<Database> initDb() async {
+    String path = join(await getDatabasesPath(), 'alarm.db');
+    return await openDatabase(path, version: 1, onCreate: _createTable);
+  }
 
-  Future<void> addAlarm(Duration alarmTime) async {
-    final alarm = await _alarmRepository.addAlarm(Alarm(
-      alarmTime: alarmTime,
-      isActive: true,
-    ));
+  static Future<Database?> setDb() async {
+    if (database == null) {
+      database = await initDb();
+      return database;
+    } else {
+      return database;
+    }
+  }
 
-    state = state.copyWith(
-      alarms: [alarm, ...state.alarms],
-    );
+  static Future<void> insertData(Alarm alarm) async {
+    await database!.insert(tableName, {
+      'alarm_time': stringDuration(alarm.alarmTime),
+      'is_active': alarm.isActive ? 0 : 1
+    });
   }
 
   static String stringDuration(Duration duration) {
@@ -38,54 +39,44 @@ class AlarmViewModelProvider extends StateNotifier<AlarmState> {
     return "$twoDigitMinutes:$twoDigitSeconds".split('.').first.padLeft(5, '0');
   }
 
-  Future<void> updateAlarm(Alarm alarm) async {
-    final newAlarm = alarm.copyWith(
-      alarmTime: alarm.alarmTime,
-      isActive: alarm.isActive,
-    );
+  static Future<List<Alarm>> getData() async {
+    final List<Map<String, dynamic>> maps =
+        await database!.query(tableName, orderBy: 'id ASC');
+    print("alarmList: $maps");
+    if (maps.isEmpty) {
+      return [];
+    } else {
+      List<Alarm> alarmList = List.generate(
+          maps.length,
+          (index) => Alarm(
+              id: maps[index]['id'],
+              alarmTime: Duration(
+                minutes: int.parse(((maps[index]['alarm_time']).split(':'))[0]),
+                seconds: int.parse(((maps[index]['alarm_time']).split(':'))[1]),
+              ),
+              isActive: maps[index]['is_active'] == 0 ? true : false));
+      return alarmList;
+    }
+  }
 
-    await _alarmRepository.updateAlarm(alarm);
-    final newAlarms =
-        state.alarms.map((e) => e.id == newAlarm.id ? newAlarm : e).toList();
-
-    state = state.copyWith(
-      alarms: newAlarms,
+  static Future<void> updateData(Alarm alarm) async {
+    await database!.update(
+      tableName,
+      {
+        'alarm_time': stringDuration(alarm.alarmTime),
+        'is_active': alarm.isActive ? 0 : 1
+      },
+      where: 'id = ?',
+      whereArgs: [alarm.id],
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  Future<void> changeStatus(Alarm alarm, int value) async {
-    final newAlarm = alarm.copyWith(
-      isActive: value == 1 ? true : false,
-    );
-
-    await _alarmRepository.updateAlarm(newAlarm);
-
-    final alarms = state.alarms
-        .map((alarm) => alarm.id == newAlarm.id ? newAlarm : alarm)
-        .toList();
-
-    state = state.copyWith(alarms: alarms);
-    print("======================");
-    print("changeStatus: $alarms");
-  }
-
-  Future<void> getAlarm() async {
-    final alarms = await _alarmRepository.getAlarm();
-
-    state = state.copyWith(
-      alarms: alarms,
-    );
-    print("======================");
-    print("getAlarm: $alarms");
-  }
-
-  Future<void> deleteAlarm(int alarmId) async {
-    await _alarmRepository.deleteAlarm(alarmId);
-
-    final alarms = state.alarms.where((alarm) => alarm.id != alarmId).toList();
-
-    state = state.copyWith(
-      alarms: alarms,
+  static Future<void> deleteData(int id) async {
+    await database!.delete(
+      tableName,
+      where: 'id = ?',
+      whereArgs: [id],
     );
   }
 }
