@@ -4,7 +4,6 @@ import 'package:drippe/views/add_edit_alarm_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AlarmScreen extends StatefulWidget {
   const AlarmScreen({Key? key}) : super(key: key);
@@ -60,8 +59,6 @@ class _AlarmScreenState extends State<AlarmScreen> {
                 Alarm alarm = alarmList[index];
                 return Column(
                   children: [
-                    // if (index == 0)
-                    //   const Divider(color: Colors.grey, height: 1),
                     Slidable(
                       endActionPane: ActionPane(
                         motion: const DrawerMotion(),
@@ -112,7 +109,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
                         },
                       ),
                     ),
-                    const Divider(color: Colors.grey),
+                    const Divider(),
                   ],
                 );
               },

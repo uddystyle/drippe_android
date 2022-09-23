@@ -1,3 +1,4 @@
+import 'package:drippe/models/alarm.dart';
 import 'package:drippe/viewModels/alarm_view_model.dart';
 import 'package:drippe/viewModels/stopWatch_view_model.dart';
 import 'package:drippe/viewModels/drippe_view_model.dart';
@@ -61,74 +62,85 @@ class DrippeScreen extends HookConsumerWidget {
     final drippeState = ref.watch(drippeViewModelProvider);
     final stopWatchState = ref.watch(stopWatchProvider);
 
+    var _screenSize = MediaQuery.of(context).size;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+          padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           child: SizedBox(
-            width: 240,
-            height: 100,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      Text('珈琲豆(g)'),
-                      const Divider(),
-                      Flexible(
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 32, fontWeight: FontWeight.normal),
-                          decoration: const InputDecoration(
-                            border:
-                                OutlineInputBorder(borderSide: BorderSide.none),
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 2),
+            width: _screenSize.width * 0.68,
+            height: _screenSize.height * 0.15,
+            child: Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: Theme.of(context).cardColor,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text('珈琲豆(g)'),
+                        const Divider(),
+                        Flexible(
+                          child: TextFormField(
+                            controller: beanController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontSize: 32, fontWeight: FontWeight.normal),
+                            decoration: const InputDecoration(
+                              hintText: '入力',
+                              hintStyle: TextStyle(fontSize: 16),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 2),
+                            ),
+                            onChanged: (String value) {
+                              drippeState.setBean(value);
+                            },
                           ),
-                          controller: beanController,
-                          onChanged: (String value) {
-                            drippeState.setBean(value);
-                          },
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 40,
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Text("抽出量(g)"),
-                      const Divider(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4.0),
-                        child: Text(
-                          recipeState.recipes.isEmpty ||
-                                  beanController.text.isEmpty
-                              ? "0"
-                              : "$waterAmount",
-                          // : "0",
-                          style: const TextStyle(
-                              fontSize: 32, fontWeight: FontWeight.normal),
+                  const SizedBox(
+                    width: 40,
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text("抽出量(g)"),
+                        const Divider(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: Text(
+                            recipeState.recipes.isEmpty ||
+                                    beanController.text.isEmpty
+                                ? "0"
+                                : "$waterAmount",
+                            // : "0",
+                            style: const TextStyle(
+                                fontSize: 32, fontWeight: FontWeight.normal),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-        const SizedBox(height: 20.0),
+        const SizedBox(height: 32.0),
         OutlinedButton(
           onPressed: () => _showDialog(
             ref,
@@ -163,6 +175,8 @@ class DrippeScreen extends HookConsumerWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            backgroundColor: Theme.of(context).cardColor,
           ),
           child: Text(
             recipeState.recipes.isEmpty
@@ -183,9 +197,11 @@ class DrippeScreen extends HookConsumerWidget {
                 onPressed: stopWatchState.isStopPressed
                     ? stopWatchState.resetStopWatch
                     : stopWatchState.stopStopWatch,
-                style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(32)),
+                style: OutlinedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  padding: const EdgeInsets.all(40),
+                  backgroundColor: Theme.of(context).cardColor,
+                ),
                 child: Text(
                   stopWatchState.isStopPressed ? "リセット" : "ストップ",
                   style: Theme.of(context).textTheme.button,
@@ -195,9 +211,11 @@ class DrippeScreen extends HookConsumerWidget {
                 onPressed: stopWatchState.isStartPressed
                     ? stopWatchState.startStopWatch
                     : null,
-                style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(32)),
+                style: OutlinedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  padding: const EdgeInsets.all(40),
+                  backgroundColor: Theme.of(context).cardColor,
+                ),
                 child: Text(
                   "スタート",
                   style: Theme.of(context).textTheme.button,
@@ -205,7 +223,7 @@ class DrippeScreen extends HookConsumerWidget {
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

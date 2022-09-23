@@ -40,9 +40,7 @@ class AlarmProvider {
   }
 
   static Future<List<Alarm>> getData() async {
-    final List<Map<String, dynamic>> maps =
-        await database!.query(tableName, orderBy: 'id ASC');
-    print("alarmList: $maps");
+    final List<Map<String, dynamic>> maps = await database!.query(tableName);
     if (maps.isEmpty) {
       return [];
     } else {

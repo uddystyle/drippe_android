@@ -102,20 +102,35 @@ class _AddEditRecipeScreenState extends ConsumerState<AddEditRecipeScreen> {
               Text("ラベル"),
               const SizedBox(height: 10),
               TextField(
-                controller: TextEditingController(text: label),
+                // controller: TextEditingController(text: label),
+                controller: labelController,
                 onChanged: (String value) {
                   label = value;
                 },
+                decoration: InputDecoration(
+                  hintText: 'ラベルを入力してください',
+                  suffixIcon: IconButton(
+                    onPressed: () => labelController.clear(),
+                    icon: const Icon(Icons.clear),
+                  ),
+                ),
               ),
               const SizedBox(height: 40),
               Text("豆とお湯の比率"),
               const SizedBox(height: 10),
               TextField(
-                controller: TextEditingController(text: ratio),
+                controller: ratioController,
                 keyboardType: TextInputType.number,
                 onChanged: (String value) {
                   ratio = value;
                 },
+                decoration: InputDecoration(
+                  hintText: '標準値:16',
+                  suffixIcon: IconButton(
+                    onPressed: () => ratioController.clear(),
+                    icon: const Icon(Icons.clear),
+                  ),
+                ),
               ),
               const SizedBox(height: 40),
               Text("豆の状態"),
