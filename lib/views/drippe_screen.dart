@@ -152,6 +152,8 @@ class DrippeScreen extends HookConsumerWidget {
                 return Center(
                   child: Text(
                     "${recipeState.recipes[index].label}: ${recipeState.recipes[index].ratio}",
+                    style: TextStyle(
+                        color: Theme.of(context).toggleableActiveColor),
                   ),
                 );
               }),

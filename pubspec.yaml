@@ -37,6 +37,8 @@ dependencies:
   hooks_riverpod:
   state_notifier:
 
+  url_launcher:
+
   shared_preferences:
   settings_ui:
 

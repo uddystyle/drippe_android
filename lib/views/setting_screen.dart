@@ -2,6 +2,7 @@ import 'package:drippe/viewModels/theme_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingScreen extends ConsumerStatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -12,6 +13,8 @@ class SettingScreen extends ConsumerStatefulWidget {
 
 class _SettingScreenState extends ConsumerState<SettingScreen> {
   bool darkIsOn = false;
+
+  final String mailUrl = 'mailto:info@uddystyle.com';
 
   @override
   Widget build(BuildContext context) {
@@ -50,20 +53,37 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
               style: Theme.of(context).textTheme.titleLarge,
             ),
             tiles: <SettingsTile>[
-              SettingsTile.navigation(
-                trailing: const Icon(Icons.keyboard_arrow_right_rounded),
-                title: const Text('レビューをする'),
-                onPressed: (context) {},
-              ),
+              // SettingsTile.navigation(
+              //   trailing: const Icon(Icons.keyboard_arrow_right_rounded),
+              //   title: const Text('レビューをする'),
+              //   onPressed: (context) {},
+              // ),
               SettingsTile.navigation(
                 trailing: const Icon(Icons.keyboard_arrow_right_rounded),
                 title: const Text('お問合せ・ご要望'),
-                onPressed: (context) {},
+                onPressed: (context) {
+                  openMailApp(mailUrl);
+                },
               ),
             ],
           ),
         ],
       ),
     );
+  }
+
+  void openMailApp(String url) async {
+    return launchMail(
+      Uri.parse(url),
+    );
+  }
+
+  Future<void> launchMail(Uri url) async {
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      final Error error = ArgumentError('Error launching $url');
+      throw error;
+    }
   }
 }
