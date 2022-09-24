@@ -5,11 +5,16 @@ import 'package:drippe/views/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:drippe/core/localization/generated/l10n.dart';
+import 'package:drippe/locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  setupLocator();
 
   runApp(
     ProviderScope(
@@ -31,6 +36,22 @@ class MyApp extends ConsumerWidget {
     final bool isDarkMode = ref.watch(appThemeProvider).getTheme();
 
     return MaterialApp(
+      localizationsDelegates: const [
+        I10n.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: I10n.delegate.supportedLocales,
+      localeResolutionCallback: (deviceLocale, supportLocals) {
+        if (supportLocals
+            .map((e) => e.languageCode)
+            .contains(deviceLocale?.languageCode)) {
+          return deviceLocale;
+        } else {
+          return const Locale('en', '');
+        }
+      },
       debugShowCheckedModeBanner: false,
       theme: isDarkMode ? darkThemeData : lightThemeData,
       darkTheme: darkThemeData,

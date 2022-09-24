@@ -1,4 +1,5 @@
-import 'package:drippe/models/alarm.dart';
+import 'package:drippe/core/localization/generated/l10n.dart';
+import 'package:drippe/locator.dart';
 import 'package:drippe/viewModels/alarm_view_model.dart';
 import 'package:drippe/viewModels/stopWatch_view_model.dart';
 import 'package:drippe/viewModels/drippe_view_model.dart';
@@ -8,9 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 const double _kItemExtent = 32.0;
+final I10n _i10n = locator<I10n>();
 
 class DrippeScreen extends HookConsumerWidget {
   final beanController = TextEditingController();
@@ -84,7 +85,7 @@ class DrippeScreen extends HookConsumerWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        Text('珈琲豆(g)'),
+                        Text(_i10n.beans),
                         const Divider(),
                         Flexible(
                           child: TextFormField(
@@ -96,12 +97,12 @@ class DrippeScreen extends HookConsumerWidget {
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                                 fontSize: 32, fontWeight: FontWeight.normal),
-                            decoration: const InputDecoration(
-                              hintText: '入力',
-                              hintStyle: TextStyle(fontSize: 16),
-                              border: OutlineInputBorder(
+                            decoration: InputDecoration(
+                              hintText: _i10n.input,
+                              hintStyle: const TextStyle(fontSize: 16),
+                              border: const OutlineInputBorder(
                                   borderSide: BorderSide.none),
-                              contentPadding: EdgeInsets.symmetric(
+                              contentPadding: const EdgeInsets.symmetric(
                                   vertical: 2, horizontal: 2),
                             ),
                             onChanged: (String value) {
@@ -118,7 +119,7 @@ class DrippeScreen extends HookConsumerWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        Text("抽出量(g)"),
+                        Text(_i10n.water),
                         const Divider(),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -180,8 +181,8 @@ class DrippeScreen extends HookConsumerWidget {
           ),
           child: Text(
             recipeState.recipes.isEmpty
-                ? 'レシピを作成してください'
-                : '比率 ${drippeState.ratio}',
+                ? _i10n.emptyRatio
+                : '${_i10n.ratio} ${drippeState.ratio}',
             style: Theme.of(context).textTheme.button,
           ),
         ),
@@ -203,7 +204,7 @@ class DrippeScreen extends HookConsumerWidget {
                   backgroundColor: Theme.of(context).cardColor,
                 ),
                 child: Text(
-                  stopWatchState.isStopPressed ? "リセット" : "ストップ",
+                  stopWatchState.isStopPressed ? _i10n.reset : _i10n.stop,
                   style: Theme.of(context).textTheme.button,
                 ),
               ),
@@ -217,7 +218,7 @@ class DrippeScreen extends HookConsumerWidget {
                   backgroundColor: Theme.of(context).cardColor,
                 ),
                 child: Text(
-                  "スタート",
+                  _i10n.start,
                   style: Theme.of(context).textTheme.button,
                 ),
               ),

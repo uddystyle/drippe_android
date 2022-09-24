@@ -1,9 +1,13 @@
+import 'package:drippe/core/localization/generated/l10n.dart';
+import 'package:drippe/locator.dart';
 import 'package:drippe/views/alarm_screen.dart';
 import 'package:drippe/views/drippe_screen.dart';
 import 'package:drippe/views/recipe_screen.dart';
 import 'package:drippe/views/setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+final I10n _i10n = locator<I10n>();
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -40,14 +44,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         showSelectedLabels: true,
         showUnselectedLabels: true,
         elevation: 0,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-              label: "Drippe", icon: Icon(Icons.water_drop)),
+              label: _i10n.drippe, icon: const Icon(Icons.water_drop)),
           BottomNavigationBarItem(
-              label: "Recipe", icon: Icon(Icons.format_list_bulleted)),
-          BottomNavigationBarItem(label: "Alarm", icon: Icon(Icons.timer)),
+              label: _i10n.recipeTitle,
+              icon: const Icon(Icons.format_list_bulleted)),
           BottomNavigationBarItem(
-              label: "Settings", icon: Icon(Icons.settings)),
+              label: _i10n.alarmTitle, icon: const Icon(Icons.timer)),
+          BottomNavigationBarItem(
+              label: _i10n.alarmTitle, icon: const Icon(Icons.settings)),
         ],
       ),
     );

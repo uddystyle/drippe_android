@@ -1,8 +1,12 @@
+import 'package:drippe/core/localization/generated/l10n.dart';
+import 'package:drippe/locator.dart';
 import 'package:drippe/viewModels/theme_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+final I10n _i10n = locator<I10n>();
 
 class SettingScreen extends ConsumerStatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -22,7 +26,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Settings",
+          _i10n.settings,
           style: Theme.of(context).textTheme.headline4,
         ),
         toolbarHeight: 100.0,
@@ -32,7 +36,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
         sections: [
           SettingsSection(
             title: Text(
-              '基本設定',
+              _i10n.basicSettings,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             tiles: <SettingsTile>[
@@ -43,13 +47,13 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                 activeSwitchColor: Colors.orange,
                 initialValue: isDarkMode,
                 leading: const Icon(Icons.format_paint),
-                title: const Text('ダークモード'),
+                title: Text(_i10n.darkMode),
               ),
             ],
           ),
           SettingsSection(
             title: Text(
-              'アプリについて',
+              _i10n.aboutApp,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             tiles: <SettingsTile>[
@@ -60,7 +64,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
               // ),
               SettingsTile.navigation(
                 trailing: const Icon(Icons.keyboard_arrow_right_rounded),
-                title: const Text('お問合せ・ご要望'),
+                title: Text(_i10n.contact),
                 onPressed: (context) {
                   openMailApp(mailUrl);
                 },

@@ -1,7 +1,11 @@
+import 'package:drippe/core/localization/generated/l10n.dart';
+import 'package:drippe/locator.dart';
 import 'package:drippe/models/alarm.dart';
 import 'package:drippe/viewModels/alarm_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+final I10n _i10n = locator<I10n>();
 
 class AddEditAlarmScreen extends StatefulWidget {
   final List<Alarm> alarmList;
@@ -44,7 +48,8 @@ class _AddEditAlarmPageState extends State<AddEditAlarmScreen> {
         leading: GestureDetector(
           child: Container(
             alignment: Alignment.center,
-            child: const Text("キャンセル", style: TextStyle(color: Colors.orange)),
+            child: Text(_i10n.cancel,
+                style: const TextStyle(color: Colors.orange)),
           ),
           onTap: () {
             Navigator.pop(context);
@@ -55,7 +60,8 @@ class _AddEditAlarmPageState extends State<AddEditAlarmScreen> {
             child: Container(
               padding: const EdgeInsets.only(right: 20),
               alignment: Alignment.center,
-              child: const Text("保存", style: TextStyle(color: Colors.orange)),
+              child: Text(_i10n.save,
+                  style: const TextStyle(color: Colors.orange)),
             ),
             onTap: () async {
               Alarm alarm = Alarm(
@@ -75,7 +81,8 @@ class _AddEditAlarmPageState extends State<AddEditAlarmScreen> {
           )
         ],
         // backgroundColor: Colors.white,
-        title: widget.index != null ? Text("アラームを編集") : Text("アラームを追加"),
+        title:
+            widget.index != null ? Text(_i10n.editAlarm) : Text(_i10n.addAlarm),
       ),
       body: Container(
         height: double.infinity,

@@ -1,3 +1,5 @@
+import 'package:drippe/core/localization/generated/l10n.dart';
+import 'package:drippe/locator.dart';
 import 'package:drippe/models/alarm.dart';
 import 'package:drippe/viewModels/alarm_view_model.dart';
 import 'package:drippe/views/add_edit_alarm_screen.dart';
@@ -13,6 +15,7 @@ class AlarmScreen extends StatefulWidget {
 }
 
 class _AlarmScreenState extends State<AlarmScreen> {
+  final I10n _i10n = locator<I10n>();
   List<Alarm> alarmList = [];
 
   Future<void> initDb() async {
@@ -39,7 +42,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
         slivers: [
           CupertinoSliverNavigationBar(
             largeTitle: Text(
-              'Alarm',
+              _i10n.alarmTitle,
               style: Theme.of(context).textTheme.headline4,
             ),
             trailing: GestureDetector(
@@ -70,7 +73,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
                             },
                             backgroundColor: Colors.red,
                             icon: Icons.delete,
-                            label: '削除',
+                            label: _i10n.delete,
                           ),
                         ],
                       ),
