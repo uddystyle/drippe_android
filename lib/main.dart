@@ -3,7 +3,7 @@ import 'package:drippe/Themes/light_theme_data.dart';
 import 'package:drippe/viewModels/theme_view_model.dart';
 import 'package:drippe/views/home_screen.dart';
 import 'package:flutter/material.dart';
-// import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

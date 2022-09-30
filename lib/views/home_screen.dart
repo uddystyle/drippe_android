@@ -6,7 +6,7 @@ import 'package:drippe/views/recipe_screen.dart';
 import 'package:drippe/views/setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-// import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 final I10n _i10n = locator<I10n>();
 
@@ -32,23 +32,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
-  // final BannerAd myBanner = BannerAd(
-  //   adUnitId: 'ca-app-pub-2118603199974248/4195095683',
-  //   size: AdSize.banner,
-  //   request: const AdRequest(),
-  //   listener: const BannerAdListener(),
-  // );
+  final BannerAd myBanner = BannerAd(
+    adUnitId: 'ca-app-pub-2118603199974248/4195095683',
+    size: AdSize.banner,
+    request: const AdRequest(),
+    listener: const BannerAdListener(),
+  );
 
   @override
   Widget build(BuildContext context) {
-    // myBanner.load();
-    // final AdWidget adWidget = AdWidget(ad: myBanner);
-    // final Container adContainer = Container(
-    //   alignment: Alignment.center,
-    //   width: myBanner.size.width.toDouble(),
-    //   height: myBanner.size.height.toDouble(),
-    //   child: adWidget,
-    // );
+    myBanner.load();
+    final AdWidget adWidget = AdWidget(ad: myBanner);
+    final Container adContainer = Container(
+      alignment: Alignment.center,
+      width: myBanner.size.width.toDouble(),
+      height: myBanner.size.height.toDouble(),
+      child: adWidget,
+    );
 
     return Scaffold(
       body: pages[currentIndex],
@@ -56,7 +56,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // adContainer,
+          adContainer,
           BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             onTap: onTap,
