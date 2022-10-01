@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "412223859156",
+    "project_id": "drippe-for-android",
+    "storage_bucket": "drippe-for-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:412223859156:android:e79b9ccaa4c10338b14e41",
+        "android_client_info": {
+          "package_name": "com.uworks.drippe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "412223859156-o754ch67gg8p56hf6ke0tm47pr5kumco.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBzcb7DlrUP8HBO-hKmswmRBthvkwREdk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "412223859156-o754ch67gg8p56hf6ke0tm47pr5kumco.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
