@@ -12,7 +12,7 @@ import 'package:drippe/locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // MobileAds.instance.initialize();
+  MobileAds.instance.initialize();
 
   final SharedPreferences prefs = await SharedPreferences.getInstance();
 
