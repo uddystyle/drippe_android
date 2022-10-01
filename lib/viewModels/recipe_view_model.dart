@@ -6,18 +6,15 @@ import 'package:drippe/states/recipe_state.dart';
 
 final recipeViewModelProvider = StateNotifierProvider(
   (ref) => RecipeViewModelProvider(
-    ref.read,
     RecipeRepository(RecipeDatabase()),
   ),
 );
 
 class RecipeViewModelProvider extends StateNotifier<RecipeState> {
-  RecipeViewModelProvider(this._reader, this._recipeRepository)
-      : super(const RecipeState()) {
+  RecipeViewModelProvider(this._recipeRepository) : super(const RecipeState()) {
     getRecipe();
   }
 
-  final Reader _reader;
   final RecipeRepository _recipeRepository;
 
   Future<void> addRecipe(
