@@ -69,7 +69,7 @@ class DrippeScreen extends HookConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
           child: SizedBox(
             width: _screenSize.width * 0.68,
             height: _screenSize.height * 0.15,
@@ -190,7 +190,7 @@ class DrippeScreen extends HookConsumerWidget {
         Text(stopWatchState.stopWatchTimeDisplay,
             style: const TextStyle(fontSize: 88, fontWeight: FontWeight.w200)),
         Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 5.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
