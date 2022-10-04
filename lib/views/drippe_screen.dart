@@ -190,7 +190,7 @@ class DrippeScreen extends HookConsumerWidget {
         Text(stopWatchState.stopWatchTimeDisplay,
             style: const TextStyle(fontSize: 88, fontWeight: FontWeight.w200)),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 5.0),
+          padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 16.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -200,7 +200,7 @@ class DrippeScreen extends HookConsumerWidget {
                     : stopWatchState.stopStopWatch,
                 style: OutlinedButton.styleFrom(
                   shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(40),
+                  fixedSize: const Size(80.0, 80.0),
                   backgroundColor: Theme.of(context).cardColor,
                 ),
                 child: Text(
@@ -214,7 +214,7 @@ class DrippeScreen extends HookConsumerWidget {
                     : null,
                 style: OutlinedButton.styleFrom(
                   shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(40),
+                  fixedSize: const Size(80.0, 80.0),
                   backgroundColor: Theme.of(context).cardColor,
                 ),
                 child: Text(
