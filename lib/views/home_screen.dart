@@ -21,8 +21,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   List pages = [
     DrippeScreen(),
     RecipeScreen(),
-    AlarmScreen(),
-    SettingScreen(),
+    const AlarmScreen(),
+    const SettingScreen(),
   ];
 
   int currentIndex = 0;
@@ -68,14 +68,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             elevation: 0,
             items: [
               BottomNavigationBarItem(
-                  label: _i10n.drippe, icon: const Icon(Icons.water_drop)),
+                label: _i10n.drippe,
+                icon: const Icon(Icons.water_drop),
+              ),
               BottomNavigationBarItem(
-                  label: _i10n.recipeTitle,
-                  icon: const Icon(Icons.format_list_bulleted)),
+                label: _i10n.recipeTitle,
+                icon: const Icon(Icons.format_list_bulleted),
+              ),
               BottomNavigationBarItem(
-                  label: _i10n.alarmTitle, icon: const Icon(Icons.timer)),
+                label: _i10n.alarmTitle,
+                icon: const Icon(Icons.timer),
+              ),
               BottomNavigationBarItem(
-                  label: _i10n.alarmTitle, icon: const Icon(Icons.settings)),
+                label: _i10n.alarmTitle,
+                icon: const Icon(Icons.settings),
+              ),
             ],
           ),
         ],
