@@ -56,7 +56,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // adContainer,
+          adContainer,
           BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             onTap: onTap,
