@@ -200,7 +200,7 @@ class DrippeScreen extends HookConsumerWidget {
                     : stopWatchState.stopStopWatch,
                 style: OutlinedButton.styleFrom(
                   shape: const CircleBorder(),
-                  fixedSize: const Size(80.0, 80.0),
+                  fixedSize: const Size(100.0, 100.0),
                   backgroundColor: Theme.of(context).cardColor,
                 ),
                 child: Text(
@@ -214,7 +214,7 @@ class DrippeScreen extends HookConsumerWidget {
                     : null,
                 style: OutlinedButton.styleFrom(
                   shape: const CircleBorder(),
-                  fixedSize: const Size(80.0, 80.0),
+                  fixedSize: const Size(100.0, 100.0),
                   backgroundColor: Theme.of(context).cardColor,
                 ),
                 child: Text(
