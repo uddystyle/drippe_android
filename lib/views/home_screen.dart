@@ -32,21 +32,50 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
-  final BannerAd myBanner = BannerAd(
-    adUnitId: 'ca-app-pub-2118603199974248/4195095683',
-    size: AdSize.banner,
-    request: const AdRequest(),
-    listener: const BannerAdListener(),
-  );
+  // final BannerAd myBanner = BannerAd(
+  //   adUnitId: 'ca-app-pub-2118603199974248/4195095683',
+  //   size: AdSize.banner,
+  //   request: const AdRequest(),
+  //   listener: const BannerAdListener(),
+  // );
+
+  BannerAd? bannerAd;
+  bool isLoad = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    bannerAd = BannerAd(
+      size: AdSize.banner,
+      adUnitId: 'ca-app-pub-2118603199974248/4195095683',
+      listener: BannerAdListener(onAdLoaded: (ad) {
+        setState(() {
+          isLoad = true;
+        });
+        print("Banner Ad Loaded");
+      }, onAdFailedToLoad: (ad, error) {
+        ad.dispose();
+      }),
+      request: const AdRequest(),
+    );
+    bannerAd!.load();
+  }
 
   @override
   Widget build(BuildContext context) {
-    myBanner.load();
-    final AdWidget adWidget = AdWidget(ad: myBanner);
+    // myBanner.load();
+    // final AdWidget adWidget = AdWidget(ad: myBanner);
+    // final Container adContainer = Container(
+    //   alignment: Alignment.center,
+    //   width: myBanner.size.width.toDouble(),
+    //   height: myBanner.size.height.toDouble(),
+    //   child: adWidget,
+    // );
+    final AdWidget adWidget = AdWidget(ad: bannerAd!);
     final Container adContainer = Container(
       alignment: Alignment.center,
-      width: myBanner.size.width.toDouble(),
-      height: myBanner.size.height.toDouble(),
+      width: bannerAd!.size.width.toDouble(),
+      height: bannerAd!.size.height.toDouble(),
       child: adWidget,
     );
 
@@ -56,7 +85,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
         children: [
-          adContainer,
+          isLoad ? adContainer : const SizedBox(height: 50),
           BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             onTap: onTap,
