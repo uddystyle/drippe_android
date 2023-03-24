@@ -56,6 +56,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "mediumcoarse": MessageLookupByLibrary.simpleMessage("Medium coarse"),
         "mediumfine": MessageLookupByLibrary.simpleMessage("Medium fine"),
         "mediumroasts": MessageLookupByLibrary.simpleMessage("Medium roasts"),
+        "memoHint": MessageLookupByLibrary.simpleMessage("Please enter a memo"),
+        "memoTitle": MessageLookupByLibrary.simpleMessage("Memo"),
         "ratio": MessageLookupByLibrary.simpleMessage("Ratio"),
         "ratioTitle":
             MessageLookupByLibrary.simpleMessage("Ratio of beans to hot water"),

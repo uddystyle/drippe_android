@@ -17,13 +17,14 @@ class RecipeViewModelProvider extends StateNotifier<RecipeState> {
 
   final RecipeRepository _recipeRepository;
 
-  Future<void> addRecipe(
-      String label, String ratio, String grind, String roast) async {
+  Future<void> addRecipe(String label, String ratio, String grind, String roast,
+      String memo) async {
     final recipe = await _recipeRepository.addRecipe(Recipe(
       label: label,
       ratio: ratio,
       grind: grind,
       roast: roast,
+      memo: memo,
     ));
 
     state = state.copyWith(
@@ -37,6 +38,7 @@ class RecipeViewModelProvider extends StateNotifier<RecipeState> {
       ratio: recipe.ratio,
       grind: recipe.grind,
       roast: recipe.roast,
+      memo: recipe.memo,
     );
 
     await _recipeRepository.updateRecipe(recipe);

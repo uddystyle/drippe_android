@@ -74,11 +74,19 @@ class RecipeScreen extends HookConsumerWidget {
                               Text(recipe.roast),
                             ],
                           ),
+                          Text(recipe.memo),
                         ],
                       ),
-                      trailing: Text(
-                        recipe.ratio,
-                        style: const TextStyle(fontSize: 32),
+                      trailing: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              recipe.ratio,
+                              style: const TextStyle(fontSize: 32),
+                            ),
+                          ],
+                        ),
                       ),
                       onTap: () async {
                         await Navigator.push(

@@ -19,6 +19,8 @@
     "save": "Save",
     "label": "Label",
     "labelHint": "Please enter a label",
+    "memoTitle": "Memo",
+    "memoHint": "Please enter a memo",
     "ratioTitle": "Ratio of beans to hot water",
     "stdRatio": "Standard:16",
     "beanCondition": "Conditional Beans",

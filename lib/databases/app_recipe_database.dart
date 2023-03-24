@@ -22,7 +22,8 @@ class AppRecipeDatabase {
         ratio TEXT,
         label TEXT,
         grind TEXT,
-        roast TEXT
+        roast TEXT,
+        memo TEXT
       )
     ''');
   }

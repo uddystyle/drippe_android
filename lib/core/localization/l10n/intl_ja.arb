@@ -19,6 +19,8 @@
     "save": "保存",
     "label": "ラベル",
     "labelHint": "ラベルを入力してください",
+    "memoTitle": "メモ",
+    "memoHint": "メモを入力してください",
     "ratioTitle": "豆とお湯の比率",
     "stdRatio": "標準値:16",
     "beanCondition": "豆の状態",

@@ -22,11 +22,13 @@ class _AddEditRecipeScreenState extends ConsumerState<AddEditRecipeScreen> {
   TextEditingController labelController = TextEditingController();
   TextEditingController grindController = TextEditingController();
   TextEditingController roastController = TextEditingController();
+  TextEditingController memoController = TextEditingController();
 
   String ratio = '16';
   String label = 'Normal';
   String grind = _i10n.mediumfine;
   String roast = _i10n.mediumroasts;
+  String memo = '';
 
   void initEditRecipe() {
     if (widget.index != null) {
@@ -34,11 +36,13 @@ class _AddEditRecipeScreenState extends ConsumerState<AddEditRecipeScreen> {
       label = widget.recipeList[widget.index!].label;
       grind = widget.recipeList[widget.index!].grind;
       roast = widget.recipeList[widget.index!].roast;
+      memo = widget.recipeList[widget.index!].memo;
 
       ratioController.text = ratio.toString();
       labelController.text = label.toString();
       grindController.text = grind.toString();
       roastController.text = roast.toString();
+      memoController.text = memo.toString();
       setState(() {});
     }
   }
@@ -79,18 +83,30 @@ class _AddEditRecipeScreenState extends ConsumerState<AddEditRecipeScreen> {
               // 編集中の場合
               if (widget.index != null) {
                 Recipe recipe = Recipe(
-                    id: widget.recipeList[widget.index!].id,
-                    ratio: ratio,
-                    label: label,
-                    grind: grind,
-                    roast: roast);
+                  id: widget.recipeList[widget.index!].id,
+                  ratio: ratio,
+                  label: label,
+                  grind: grind,
+                  roast: roast,
+                  memo: memo,
+                );
                 await recipeViewModel.updateRecipe(recipe);
               } else {
                 // 追加の場合
                 Recipe recipe = Recipe(
-                    ratio: ratio, label: label, grind: grind, roast: roast);
+                  ratio: ratio,
+                  label: label,
+                  grind: grind,
+                  roast: roast,
+                  memo: memo,
+                );
                 await recipeViewModel.addRecipe(
-                    recipe.label, recipe.ratio, recipe.grind, recipe.roast);
+                  recipe.label,
+                  recipe.ratio,
+                  recipe.grind,
+                  recipe.roast,
+                  recipe.memo,
+                );
               }
               Navigator.pop(context);
             },
@@ -193,6 +209,18 @@ class _AddEditRecipeScreenState extends ConsumerState<AddEditRecipeScreen> {
                       roast = newValue!;
                     });
                   }),
+              const SizedBox(height: 40),
+              Text(_i10n.memoTitle),
+              const SizedBox(height: 10),
+              TextField(
+                controller: memoController,
+                onChanged: (String value) {
+                  memo = value;
+                },
+                decoration: InputDecoration(
+                  hintText: _i10n.memoHint,
+                ),
+              ),
             ],
           ),
         ),

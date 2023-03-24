@@ -12,6 +12,7 @@ _$_Recipe _$$_RecipeFromJson(Map<String, dynamic> json) => _$_Recipe(
       label: json['label'] as String? ?? '',
       grind: json['grind'] as String? ?? '',
       roast: json['roast'] as String? ?? '',
+      memo: json['memo'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$_RecipeToJson(_$_Recipe instance) => <String, dynamic>{
@@ -20,4 +21,5 @@ Map<String, dynamic> _$$_RecipeToJson(_$_Recipe instance) => <String, dynamic>{
       'label': instance.label,
       'grind': instance.grind,
       'roast': instance.roast,
+      'memo': instance.memo,
     };

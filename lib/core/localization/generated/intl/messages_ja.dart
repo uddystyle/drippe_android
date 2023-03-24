@@ -53,6 +53,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "mediumcoarse": MessageLookupByLibrary.simpleMessage("中粗挽き"),
         "mediumfine": MessageLookupByLibrary.simpleMessage("中細挽き"),
         "mediumroasts": MessageLookupByLibrary.simpleMessage("ミディアムロースト"),
+        "memoHint": MessageLookupByLibrary.simpleMessage("メモを入力してください"),
+        "memoTitle": MessageLookupByLibrary.simpleMessage("メモ"),
         "ratio": MessageLookupByLibrary.simpleMessage("比率"),
         "ratioTitle": MessageLookupByLibrary.simpleMessage("豆とお湯の比率"),
         "recipeTitle": MessageLookupByLibrary.simpleMessage("レシピ"),

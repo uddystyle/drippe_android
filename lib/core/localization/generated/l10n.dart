@@ -240,6 +240,26 @@ class I10n {
     );
   }
 
+  /// `Memo`
+  String get memoTitle {
+    return Intl.message(
+      'Memo',
+      name: 'memoTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a memo`
+  String get memoHint {
+    return Intl.message(
+      'Please enter a memo',
+      name: 'memoHint',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Ratio of beans to hot water`
   String get ratioTitle {
     return Intl.message(
