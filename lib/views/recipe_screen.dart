@@ -62,42 +62,45 @@ class RecipeScreen extends HookConsumerWidget {
                         ),
                       ],
                     ),
-                    child: ListTile(
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(recipe.label),
-                          Row(
-                            children: [
-                              Text(recipe.grind),
-                              const SizedBox(width: 10),
-                              Text(recipe.roast),
-                            ],
-                          ),
-                          Text(recipe.memo),
-                        ],
-                      ),
-                      trailing: Container(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              recipe.ratio,
-                              style: const TextStyle(fontSize: 32),
+                            Text(recipe.label),
+                            Row(
+                              children: [
+                                Text(recipe.grind),
+                                const SizedBox(width: 10),
+                                Text(recipe.roast),
+                              ],
                             ),
+                            Text(recipe.memo),
                           ],
                         ),
-                      ),
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddEditRecipeScreen(
-                                recipeState.recipes,
-                                index: index),
+                        trailing: Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                recipe.ratio,
+                                style: const TextStyle(fontSize: 32),
+                              ),
+                            ],
                           ),
-                        );
-                      },
+                        ),
+                        onTap: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddEditRecipeScreen(
+                                  recipeState.recipes,
+                                  index: index),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                   const Divider(),
