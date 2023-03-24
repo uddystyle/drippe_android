@@ -11,6 +11,7 @@ abstract class Recipe with _$Recipe {
     @Default('') String label,
     @Default('') String grind,
     @Default('') String roast,
+    @Default('') String memo,
   }) = _Recipe;
 
   factory Recipe.fromJson(Map<String, dynamic> json) => _$RecipeFromJson(json);

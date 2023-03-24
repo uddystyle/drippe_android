@@ -1,7 +1,11 @@
+import 'package:drippe/core/localization/generated/l10n.dart';
+import 'package:drippe/locator.dart';
 import 'package:drippe/models/recipe.dart';
 import 'package:drippe/viewModels/recipe_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+final I10n _i10n = locator<I10n>();
 
 class AddEditRecipeScreen extends ConsumerStatefulWidget {
   final List<Recipe> recipeList;
@@ -18,11 +22,13 @@ class _AddEditRecipeScreenState extends ConsumerState<AddEditRecipeScreen> {
   TextEditingController labelController = TextEditingController();
   TextEditingController grindController = TextEditingController();
   TextEditingController roastController = TextEditingController();
+  TextEditingController memoController = TextEditingController();
 
   String ratio = '16';
-  String label = 'ふつう';
-  String grind = '中細挽き';
-  String roast = 'ミディアムロースト';
+  String label = 'Normal';
+  String grind = _i10n.mediumfine;
+  String roast = _i10n.mediumroasts;
+  String memo = '';
 
   void initEditRecipe() {
     if (widget.index != null) {
@@ -30,11 +36,13 @@ class _AddEditRecipeScreenState extends ConsumerState<AddEditRecipeScreen> {
       label = widget.recipeList[widget.index!].label;
       grind = widget.recipeList[widget.index!].grind;
       roast = widget.recipeList[widget.index!].roast;
+      memo = widget.recipeList[widget.index!].memo;
 
       ratioController.text = ratio.toString();
       labelController.text = label.toString();
       grindController.text = grind.toString();
       roastController.text = roast.toString();
+      memoController.text = memo.toString();
       setState(() {});
     }
   }
@@ -56,7 +64,8 @@ class _AddEditRecipeScreenState extends ConsumerState<AddEditRecipeScreen> {
         leading: GestureDetector(
           child: Container(
             alignment: Alignment.center,
-            child: const Text('キャンセル', style: TextStyle(color: Colors.orange)),
+            child: Text(_i10n.cancel,
+                style: const TextStyle(color: Colors.orange)),
           ),
           onTap: () {
             Navigator.pop(context);
@@ -67,31 +76,46 @@ class _AddEditRecipeScreenState extends ConsumerState<AddEditRecipeScreen> {
             child: Container(
               padding: const EdgeInsets.only(right: 20),
               alignment: Alignment.center,
-              child: const Text('保存', style: TextStyle(color: Colors.orange)),
+              child: Text(_i10n.save,
+                  style: const TextStyle(color: Colors.orange)),
             ),
             onTap: () async {
               // 編集中の場合
               if (widget.index != null) {
                 Recipe recipe = Recipe(
-                    id: widget.recipeList[widget.index!].id,
-                    ratio: ratio,
-                    label: label,
-                    grind: grind,
-                    roast: roast);
+                  id: widget.recipeList[widget.index!].id,
+                  ratio: ratio,
+                  label: label,
+                  grind: grind,
+                  roast: roast,
+                  memo: memo,
+                );
                 await recipeViewModel.updateRecipe(recipe);
               } else {
                 // 追加の場合
                 Recipe recipe = Recipe(
-                    ratio: ratio, label: label, grind: grind, roast: roast);
+                  ratio: ratio,
+                  label: label,
+                  grind: grind,
+                  roast: roast,
+                  memo: memo,
+                );
                 await recipeViewModel.addRecipe(
-                    recipe.label, recipe.ratio, recipe.grind, recipe.roast);
+                  recipe.label,
+                  recipe.ratio,
+                  recipe.grind,
+                  recipe.roast,
+                  recipe.memo,
+                );
               }
               Navigator.pop(context);
             },
           )
         ],
         // backgroundColor: Colors.white,
-        title: widget.index != null ? Text("レシピを編集") : Text("レシピを追加"),
+        title: widget.index != null
+            ? Text(_i10n.editRecipe)
+            : Text(_i10n.addRecipe),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -99,26 +123,40 @@ class _AddEditRecipeScreenState extends ConsumerState<AddEditRecipeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("ラベル"),
+              Text(_i10n.label),
               const SizedBox(height: 10),
               TextField(
-                controller: TextEditingController(text: label),
+                controller: labelController,
                 onChanged: (String value) {
                   label = value;
                 },
+                decoration: InputDecoration(
+                  hintText: _i10n.labelHint,
+                  suffixIcon: IconButton(
+                    onPressed: () => labelController.clear(),
+                    icon: const Icon(Icons.clear),
+                  ),
+                ),
               ),
               const SizedBox(height: 40),
-              Text("豆とお湯の比率"),
+              Text(_i10n.ratioTitle),
               const SizedBox(height: 10),
               TextField(
-                controller: TextEditingController(text: ratio),
+                controller: ratioController,
                 keyboardType: TextInputType.number,
                 onChanged: (String value) {
                   ratio = value;
                 },
+                decoration: InputDecoration(
+                  hintText: _i10n.stdRatio,
+                  suffixIcon: IconButton(
+                    onPressed: () => ratioController.clear(),
+                    icon: const Icon(Icons.clear),
+                  ),
+                ),
               ),
               const SizedBox(height: 40),
-              Text("豆の状態"),
+              Text(_i10n.beanCondition),
               const SizedBox(height: 10),
               DropdownButton(
                   value: grind,
@@ -129,8 +167,14 @@ class _AddEditRecipeScreenState extends ConsumerState<AddEditRecipeScreen> {
                   underline: Container(
                     height: 0,
                   ),
-                  items: <String>['極細挽き', '細挽き', '中細挽き', '中挽き', '中粗挽き', '粗挽き']
-                      .map<DropdownMenuItem<String>>((String value) {
+                  items: <String>[
+                    _i10n.turkish,
+                    _i10n.fine,
+                    _i10n.mediumfine,
+                    _i10n.medium,
+                    _i10n.mediumcoarse,
+                    _i10n.coarse
+                  ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                         value: value, child: Text(value));
                   }).toList(),
@@ -149,13 +193,13 @@ class _AddEditRecipeScreenState extends ConsumerState<AddEditRecipeScreen> {
                     height: 0,
                   ),
                   items: <String>[
-                    'ライトロースト',
-                    'シナモンロースト',
-                    'ミディアムロースト',
-                    'ハイロースト',
-                    'シティロースト',
-                    'フレンチロースト',
-                    'イタリアンロースト'
+                    _i10n.light,
+                    _i10n.cinnamon,
+                    _i10n.mediumroasts,
+                    _i10n.high,
+                    _i10n.city,
+                    _i10n.french,
+                    _i10n.italian
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                         value: value, child: Text(value));
@@ -165,6 +209,18 @@ class _AddEditRecipeScreenState extends ConsumerState<AddEditRecipeScreen> {
                       roast = newValue!;
                     });
                   }),
+              const SizedBox(height: 40),
+              Text(_i10n.memoTitle),
+              const SizedBox(height: 10),
+              TextField(
+                controller: memoController,
+                onChanged: (String value) {
+                  memo = value;
+                },
+                decoration: InputDecoration(
+                  hintText: _i10n.memoHint,
+                ),
+              ),
             ],
           ),
         ),

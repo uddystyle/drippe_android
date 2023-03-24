@@ -6,27 +6,25 @@ import 'package:drippe/states/recipe_state.dart';
 
 final recipeViewModelProvider = StateNotifierProvider(
   (ref) => RecipeViewModelProvider(
-    ref.read,
     RecipeRepository(RecipeDatabase()),
   ),
 );
 
 class RecipeViewModelProvider extends StateNotifier<RecipeState> {
-  RecipeViewModelProvider(this._reader, this._recipeRepository)
-      : super(const RecipeState()) {
+  RecipeViewModelProvider(this._recipeRepository) : super(const RecipeState()) {
     getRecipe();
   }
 
-  final Reader _reader;
   final RecipeRepository _recipeRepository;
 
-  Future<void> addRecipe(
-      String label, String ratio, String grind, String roast) async {
+  Future<void> addRecipe(String label, String ratio, String grind, String roast,
+      String memo) async {
     final recipe = await _recipeRepository.addRecipe(Recipe(
       label: label,
       ratio: ratio,
       grind: grind,
       roast: roast,
+      memo: memo,
     ));
 
     state = state.copyWith(
@@ -40,6 +38,7 @@ class RecipeViewModelProvider extends StateNotifier<RecipeState> {
       ratio: recipe.ratio,
       grind: recipe.grind,
       roast: recipe.roast,
+      memo: recipe.memo,
     );
 
     await _recipeRepository.updateRecipe(recipe);

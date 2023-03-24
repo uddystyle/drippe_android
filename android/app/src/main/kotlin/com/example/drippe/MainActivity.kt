@@ -1,4 +1,4 @@
-package com.example.drippe
+package com.uworks.drippe
 
 import io.flutter.embedding.android.FlutterActivity
 

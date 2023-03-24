@@ -1,8 +1,9 @@
-import 'package:drippe/models/recipe.dart';
-import 'package:drippe/models/stop_watch.dart';
+import 'package:drippe/core/localization/generated/l10n.dart';
+import 'package:drippe/locator.dart';
+import 'package:drippe/viewModels/alarm_view_model.dart';
+import 'package:drippe/viewModels/stopWatch_view_model.dart';
 import 'package:drippe/viewModels/drippe_view_model.dart';
 import 'package:drippe/viewModels/recipe_view_model.dart';
-import 'package:drippe/viewModels/test_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 const double _kItemExtent = 32.0;
+final I10n _i10n = locator<I10n>();
 
 class DrippeScreen extends HookConsumerWidget {
   final beanController = TextEditingController();
@@ -20,6 +22,20 @@ class DrippeScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // useEffect(() {
+    //   AlarmProvider.setDb();
+    //   final prefs = SharedPreferences.getInstance();
+    //   _selectedIndex = prefs.getInt('index')!;
+    //   return null;
+    // }, const []);
+
+    useEffect(() {
+      Future<void>.microtask(() async {
+        AlarmProvider.setDb();
+      });
+      return null;
+    }, const []);
+
     return Scaffold(
       body: _drippeScreen(context, ref),
     );
@@ -44,77 +60,88 @@ class DrippeScreen extends HookConsumerWidget {
 
   Widget _drippeScreen(context, ref) {
     final recipeState = ref.watch(recipeViewModelProvider);
-    final ratioTest = ref.watch(testViewModelProvider);
+    final drippeState = ref.watch(drippeViewModelProvider);
+    final stopWatchState = ref.watch(stopWatchProvider);
 
-    // _drippeViewModel.setRef(ref);
+    var _screenSize = MediaQuery.of(context).size;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
           child: SizedBox(
-            width: 240,
-            height: 100,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      Text('珈琲豆(g)'),
-                      const Divider(),
-                      Flexible(
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 32, fontWeight: FontWeight.normal),
-                          decoration: const InputDecoration(
-                            border:
-                                OutlineInputBorder(borderSide: BorderSide.none),
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 2),
+            width: _screenSize.width * 0.68,
+            height: _screenSize.height * 0.15,
+            child: Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: Theme.of(context).cardColor,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(_i10n.beans),
+                        const Divider(),
+                        Flexible(
+                          child: TextFormField(
+                            controller: beanController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontSize: 32, fontWeight: FontWeight.normal),
+                            decoration: InputDecoration(
+                              hintText: _i10n.input,
+                              hintStyle: const TextStyle(fontSize: 16),
+                              border: const OutlineInputBorder(
+                                  borderSide: BorderSide.none),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 2),
+                            ),
+                            onChanged: (String value) {
+                              drippeState.setBean(value);
+                            },
                           ),
-                          controller: beanController,
-                          onChanged: (String value) {
-                            ratioTest.setBean(value);
-                          },
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 40,
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Text("抽出量(g)"),
-                      const Divider(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4.0),
-                        child: Text(
-                          recipeState.recipes.isEmpty ||
-                                  beanController.text.isEmpty
-                              ? "0"
-                              : "$waterAmount",
-                          // : "0",
-                          style: const TextStyle(
-                              fontSize: 32, fontWeight: FontWeight.normal),
+                  const SizedBox(
+                    width: 40,
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(_i10n.water),
+                        const Divider(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: Text(
+                            recipeState.recipes.isEmpty ||
+                                    beanController.text.isEmpty
+                                ? "0"
+                                : "$waterAmount",
+                            // : "0",
+                            style: const TextStyle(
+                                fontSize: 32, fontWeight: FontWeight.normal),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-        const SizedBox(height: 20.0),
+        const SizedBox(height: 32.0),
         OutlinedButton(
           onPressed: () => _showDialog(
             ref,
@@ -129,15 +156,17 @@ class DrippeScreen extends HookConsumerWidget {
               onSelectedItemChanged: (int selectedItem) {
                 // 選択されたインデックスが返ってくる
                 _selectedIndex = selectedItem;
-                ratioTest.setIndex(_selectedIndex);
-                ratio = recipeState.recipes[ratioTest.index].ratio;
-                ratioTest.setRatio(ratio);
+                drippeState.setIndex(_selectedIndex);
+                ratio = recipeState.recipes[drippeState.index].ratio;
+                drippeState.setRatio(ratio);
               },
               children: List<Widget>.generate(recipeState.recipes.length,
                   (int index) {
                 return Center(
                   child: Text(
                     "${recipeState.recipes[index].label}: ${recipeState.recipes[index].ratio}",
+                    style: TextStyle(
+                        color: Theme.of(context).toggleableActiveColor),
                   ),
                 );
               }),
@@ -147,50 +176,55 @@ class DrippeScreen extends HookConsumerWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            backgroundColor: Theme.of(context).cardColor,
           ),
           child: Text(
             recipeState.recipes.isEmpty
-                ? 'レシピを作成してください'
-                : '比率 ${ratioTest.ratio}',
-            // : "",
+                ? _i10n.emptyRatio
+                : '${_i10n.ratio} ${drippeState.ratio}',
             style: Theme.of(context).textTheme.button,
           ),
         ),
         const SizedBox(height: 20.0),
-        Text(ref.watch(stopWatchProvider).stopWatchTimeDisplay,
+        Text(stopWatchState.stopWatchTimeDisplay,
             style: const TextStyle(fontSize: 88, fontWeight: FontWeight.w200)),
         Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 16.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               OutlinedButton(
-                onPressed: ref.watch(stopWatchProvider).isStopPressed
-                    ? ref.watch(stopWatchProvider).resetStopWatch
-                    : ref.watch(stopWatchProvider).stopStopWatch,
-                style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(32)),
+                onPressed: stopWatchState.isStopPressed
+                    ? stopWatchState.resetStopWatch
+                    : stopWatchState.stopStopWatch,
+                style: OutlinedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  fixedSize: const Size(100.0, 100.0),
+                  backgroundColor: Theme.of(context).cardColor,
+                ),
                 child: Text(
-                  ref.watch(stopWatchProvider).isStopPressed ? "リセット" : "ストップ",
+                  stopWatchState.isStopPressed ? _i10n.reset : _i10n.stop,
                   style: Theme.of(context).textTheme.button,
                 ),
               ),
               OutlinedButton(
-                onPressed: ref.watch(stopWatchProvider).isStartPressed
-                    ? ref.watch(stopWatchProvider).startStopWatch
+                onPressed: stopWatchState.isStartPressed
+                    ? stopWatchState.startStopWatch
                     : null,
-                style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(32)),
+                style: OutlinedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  fixedSize: const Size(100.0, 100.0),
+                  backgroundColor: Theme.of(context).cardColor,
+                ),
                 child: Text(
-                  "スタート",
+                  _i10n.start,
                   style: Theme.of(context).textTheme.button,
                 ),
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

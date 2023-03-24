@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.1.1+12
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
@@ -29,6 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   sqflite:
   path:
@@ -37,10 +39,24 @@ dependencies:
   hooks_riverpod:
   state_notifier:
 
+  url_launcher:
+  intl:
+  get_it:
+
+  shared_preferences:
+  settings_ui:
+
+  audioplayers: ^0.20.1
+
   freezed_annotation:
   json_serializable:
 
   flutter_slidable:
+
+  google_mobile_ads:
+  firebase_analytics:
+
+  flutter_native_splash:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -66,6 +82,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  generate: true
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -73,7 +90,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+    - assets/
+    - assets/sounds/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
@@ -102,3 +121,22 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_intl:
+  enabled: true
+  class_name: I10n
+  main_locale: en
+  arb_dir: lib/core/localization/l10n
+  output_dir: lib/core/localization/generated
+
+flutter_native_splash:
+  color: '#ffffff'
+  image: 'assets/images/splash.png'
+  color_dark: '#262626'
+  image_dark: 'assets/images/splash.png'
+  fullscreen: true
+  android_12:
+    icon_background_color: '#ffffff'
+    image: 'assets/images/splash_android12.png'
+    icon_background_color_dark: '#262626'
+    image_dark: 'assets/images/splash_android12.png'

@@ -8,7 +8,7 @@ class RecipeDatabase extends AppRecipeDatabase {
 
   Future<List<Recipe>> getRecipe() async {
     final db = await database;
-    final maps = await db.query(_tableName);
+    final maps = await db.query(_tableName, orderBy: 'id ASC');
 
     if (maps.isEmpty) return [];
 

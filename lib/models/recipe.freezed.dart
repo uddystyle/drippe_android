@@ -25,6 +25,7 @@ mixin _$Recipe {
   String get label => throw _privateConstructorUsedError;
   String get grind => throw _privateConstructorUsedError;
   String get roast => throw _privateConstructorUsedError;
+  String get memo => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,13 @@ mixin _$Recipe {
 abstract class $RecipeCopyWith<$Res> {
   factory $RecipeCopyWith(Recipe value, $Res Function(Recipe) then) =
       _$RecipeCopyWithImpl<$Res>;
-  $Res call({int? id, String ratio, String label, String grind, String roast});
+  $Res call(
+      {int? id,
+      String ratio,
+      String label,
+      String grind,
+      String roast,
+      String memo});
 }
 
 /// @nodoc
@@ -53,6 +60,7 @@ class _$RecipeCopyWithImpl<$Res> implements $RecipeCopyWith<$Res> {
     Object? label = freezed,
     Object? grind = freezed,
     Object? roast = freezed,
+    Object? memo = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -75,6 +83,10 @@ class _$RecipeCopyWithImpl<$Res> implements $RecipeCopyWith<$Res> {
           ? _value.roast
           : roast // ignore: cast_nullable_to_non_nullable
               as String,
+      memo: memo == freezed
+          ? _value.memo
+          : memo // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -84,7 +96,13 @@ abstract class _$$_RecipeCopyWith<$Res> implements $RecipeCopyWith<$Res> {
   factory _$$_RecipeCopyWith(_$_Recipe value, $Res Function(_$_Recipe) then) =
       __$$_RecipeCopyWithImpl<$Res>;
   @override
-  $Res call({int? id, String ratio, String label, String grind, String roast});
+  $Res call(
+      {int? id,
+      String ratio,
+      String label,
+      String grind,
+      String roast,
+      String memo});
 }
 
 /// @nodoc
@@ -103,6 +121,7 @@ class __$$_RecipeCopyWithImpl<$Res> extends _$RecipeCopyWithImpl<$Res>
     Object? label = freezed,
     Object? grind = freezed,
     Object? roast = freezed,
+    Object? memo = freezed,
   }) {
     return _then(_$_Recipe(
       id: id == freezed
@@ -125,6 +144,10 @@ class __$$_RecipeCopyWithImpl<$Res> extends _$RecipeCopyWithImpl<$Res>
           ? _value.roast
           : roast // ignore: cast_nullable_to_non_nullable
               as String,
+      memo: memo == freezed
+          ? _value.memo
+          : memo // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -137,7 +160,8 @@ class _$_Recipe implements _Recipe {
       this.ratio = '',
       this.label = '',
       this.grind = '',
-      this.roast = ''});
+      this.roast = '',
+      this.memo = ''});
 
   factory _$_Recipe.fromJson(Map<String, dynamic> json) =>
       _$$_RecipeFromJson(json);
@@ -156,10 +180,13 @@ class _$_Recipe implements _Recipe {
   @override
   @JsonKey()
   final String roast;
+  @override
+  @JsonKey()
+  final String memo;
 
   @override
   String toString() {
-    return 'Recipe(id: $id, ratio: $ratio, label: $label, grind: $grind, roast: $roast)';
+    return 'Recipe(id: $id, ratio: $ratio, label: $label, grind: $grind, roast: $roast, memo: $memo)';
   }
 
   @override
@@ -171,7 +198,8 @@ class _$_Recipe implements _Recipe {
             const DeepCollectionEquality().equals(other.ratio, ratio) &&
             const DeepCollectionEquality().equals(other.label, label) &&
             const DeepCollectionEquality().equals(other.grind, grind) &&
-            const DeepCollectionEquality().equals(other.roast, roast));
+            const DeepCollectionEquality().equals(other.roast, roast) &&
+            const DeepCollectionEquality().equals(other.memo, memo));
   }
 
   @JsonKey(ignore: true)
@@ -182,7 +210,8 @@ class _$_Recipe implements _Recipe {
       const DeepCollectionEquality().hash(ratio),
       const DeepCollectionEquality().hash(label),
       const DeepCollectionEquality().hash(grind),
-      const DeepCollectionEquality().hash(roast));
+      const DeepCollectionEquality().hash(roast),
+      const DeepCollectionEquality().hash(memo));
 
   @JsonKey(ignore: true)
   @override
@@ -203,7 +232,8 @@ abstract class _Recipe implements Recipe {
       final String ratio,
       final String label,
       final String grind,
-      final String roast}) = _$_Recipe;
+      final String roast,
+      final String memo}) = _$_Recipe;
 
   factory _Recipe.fromJson(Map<String, dynamic> json) = _$_Recipe.fromJson;
 
@@ -217,6 +247,8 @@ abstract class _Recipe implements Recipe {
   String get grind;
   @override
   String get roast;
+  @override
+  String get memo;
   @override
   @JsonKey(ignore: true)
   _$$_RecipeCopyWith<_$_Recipe> get copyWith =>

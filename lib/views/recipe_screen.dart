@@ -1,4 +1,5 @@
-import 'package:drippe/models/recipe.dart';
+import 'package:drippe/core/localization/generated/l10n.dart';
+import 'package:drippe/locator.dart';
 import 'package:drippe/viewModels/recipe_view_model.dart';
 import 'package:drippe/views/add_edit_recipe_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +7,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path/path.dart';
+
+final I10n _i10n = locator<I10n>();
 
 class RecipeScreen extends HookConsumerWidget {
   @override
@@ -23,7 +26,8 @@ class RecipeScreen extends HookConsumerWidget {
       slivers: [
         CupertinoSliverNavigationBar(
           largeTitle: Text(
-            'Recipe',
+            // AppLocalizations.of(context)!.recipeTitle,
+            _i10n.recipeTitle,
             style: Theme.of(context).textTheme.headline4,
           ),
           trailing: GestureDetector(
@@ -49,44 +53,57 @@ class RecipeScreen extends HookConsumerWidget {
                       children: [
                         SlidableAction(
                           onPressed: (value) async {
-                            await recipeViewModel.deleteRecipe(recipe.id!);
+                            await recipeViewModel.deleteRecipe(recipe.id);
                           },
-                          label: '削除',
+                          // label: AppLocalizations.of(context)!.delete,
+                          label: _i10n.delete,
                           backgroundColor: Colors.red,
                           icon: Icons.delete,
                         ),
                       ],
                     ),
-                    child: ListTile(
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(recipe.label),
-                          Row(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(recipe.label),
+                            Row(
+                              children: [
+                                Text(recipe.grind),
+                                const SizedBox(width: 10),
+                                Text(recipe.roast),
+                              ],
+                            ),
+                            Text(recipe.memo),
+                          ],
+                        ),
+                        trailing: Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(recipe.grind),
-                              const SizedBox(width: 10),
-                              Text(recipe.roast),
+                              Text(
+                                recipe.ratio,
+                                style: const TextStyle(fontSize: 32),
+                              ),
                             ],
                           ),
-                        ],
+                        ),
+                        onTap: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddEditRecipeScreen(
+                                  recipeState.recipes,
+                                  index: index),
+                            ),
+                          );
+                        },
                       ),
-                      trailing: Text(
-                        recipe.ratio,
-                        style: const TextStyle(fontSize: 32),
-                      ),
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddEditRecipeScreen(
-                                recipeState.recipes,
-                                index: index),
-                          ),
-                        );
-                      },
                     ),
                   ),
+                  const Divider(),
                 ],
               );
             },
