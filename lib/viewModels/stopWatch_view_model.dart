@@ -6,6 +6,9 @@ import 'package:drippe/viewModels/sound_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'package:drippe/repositories/ad_interstitial.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
 final stopWatchProvider = ChangeNotifierProvider((ref) => StopWatchModel());
 
 class StopWatchModel extends ChangeNotifier {
@@ -18,6 +21,9 @@ class StopWatchModel extends ChangeNotifier {
   final duration = const Duration(seconds: 1);
   final SoundLogic _soundLogic = SoundLogic();
   List<Alarm> alarmList = [];
+
+  InterstitialAd? _interstitialAd;
+  AdInterstitial adInterstitial = new AdInterstitial();
 
   Future<void> reBuild() async {
     alarmList = await AlarmProvider.getData();
@@ -44,6 +50,7 @@ class StopWatchModel extends ChangeNotifier {
     _soundLogic.load;
     reBuild();
     startTimer();
+    adInterstitial.createAd();
     notifyListeners();
   }
 
@@ -58,7 +65,9 @@ class StopWatchModel extends ChangeNotifier {
     isResetPressed = true;
     isStartPressed = true;
     swatch.reset();
+    adInterstitial.showAd();
     stopWatchTimeDisplay = "00:00";
+    _interstitialAd?.dispose();
     notifyListeners();
   }
 
