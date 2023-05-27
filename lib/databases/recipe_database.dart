@@ -1,7 +1,7 @@
 import 'package:drippe/databases/app_recipe_database.dart';
 import 'package:drippe/models/recipe.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
+// import 'package:path/path.dart';
 
 class RecipeDatabase extends AppRecipeDatabase {
   final String _tableName = 'recipe';
