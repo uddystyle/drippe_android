@@ -46,6 +46,8 @@
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
 		<key>UIStatusBarHidden</key>
-		<true/>
-	</dict>
+		<false/>
+		<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+</dict>
 </plist>
