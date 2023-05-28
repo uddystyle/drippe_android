@@ -16,6 +16,8 @@ final I10n _i10n = locator<I10n>();
 class DrippeScreen extends HookConsumerWidget {
   final beanController = TextEditingController();
 
+  DrippeScreen({super.key});
+
   int get waterAmount => int.parse(beanController.text) * int.parse(ratio);
   int _selectedIndex = 0;
   String ratio = '16';

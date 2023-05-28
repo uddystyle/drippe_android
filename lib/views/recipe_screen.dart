@@ -26,10 +26,9 @@ class RecipeScreen extends HookConsumerWidget {
       slivers: [
         CupertinoSliverNavigationBar(
           largeTitle: Text(
-            // AppLocalizations.of(context)!.recipeTitle,
-            _i10n.recipeTitle,
-            style: Theme.of(context).textTheme.headline4,
-          ),
+              // AppLocalizations.of(context)!.recipeTitle,
+              _i10n.recipeTitle,
+              style: Theme.of(context).textTheme.headlineLarge),
           trailing: GestureDetector(
             child: const Icon(Icons.add, color: Colors.orange),
             onTap: () async {
@@ -68,7 +67,11 @@ class RecipeScreen extends HookConsumerWidget {
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(recipe.label),
+                            Text(
+                              recipe.label,
+                              style: const TextStyle(fontSize: 24),
+                            ),
+                            const SizedBox(height: 6),
                             Row(
                               children: [
                                 Text(recipe.grind),
@@ -76,19 +79,18 @@ class RecipeScreen extends HookConsumerWidget {
                                 Text(recipe.roast),
                               ],
                             ),
+                            const SizedBox(height: 8),
                             Text(recipe.memo),
                           ],
                         ),
-                        trailing: Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                recipe.ratio,
-                                style: const TextStyle(fontSize: 32),
-                              ),
-                            ],
-                          ),
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              recipe.ratio,
+                              style: const TextStyle(fontSize: 32),
+                            ),
+                          ],
                         ),
                         onTap: () async {
                           await Navigator.push(

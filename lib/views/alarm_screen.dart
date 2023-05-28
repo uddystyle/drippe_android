@@ -43,7 +43,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
           CupertinoSliverNavigationBar(
             largeTitle: Text(
               _i10n.alarmTitle,
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
             trailing: GestureDetector(
               child: const Icon(Icons.add, color: Colors.orange),
