@@ -11,7 +11,7 @@ class AdInterstitial {
   void createAd() {
     InterstitialAd.load(
       adUnitId: Platform.isAndroid
-          ? 'ca-app-pub-3940256099942544/1033173712'
+          ? 'ca-app-pub-2118603199974248/9842675669'
           : 'ca-app-pub-3940256099942544/4411468910',
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
@@ -62,7 +62,7 @@ class AdInterstitial {
 // 広告IDをプラットフォームに合わせて取得
   static String get interstitialAdUnitId {
     if (Platform.isAndroid) {
-      return 'ca-app-pub-3940256099942544/1033173712';
+      return 'ca-app-pub-2118603199974248/9842675669';
     } else {
       return 'ca-app-pub-3940256099942544/8691691433';
     }

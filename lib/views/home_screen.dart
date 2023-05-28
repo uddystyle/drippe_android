@@ -32,13 +32,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
-  // final BannerAd myBanner = BannerAd(
-  //   adUnitId: 'ca-app-pub-2118603199974248/4195095683',
-  //   size: AdSize.banner,
-  //   request: const AdRequest(),
-  //   listener: const BannerAdListener(),
-  // );
-
   BannerAd? bannerAd;
   bool isLoad = false;
 
@@ -63,14 +56,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // myBanner.load();
-    // final AdWidget adWidget = AdWidget(ad: myBanner);
-    // final Container adContainer = Container(
-    //   alignment: Alignment.center,
-    //   width: myBanner.size.width.toDouble(),
-    //   height: myBanner.size.height.toDouble(),
-    //   child: adWidget,
-    // );
     final AdWidget adWidget = AdWidget(ad: bannerAd!);
     final Container adContainer = Container(
       alignment: Alignment.center,

@@ -23,7 +23,7 @@ class StopWatchModel extends ChangeNotifier {
   List<Alarm> alarmList = [];
 
   InterstitialAd? _interstitialAd;
-  AdInterstitial adInterstitial = new AdInterstitial();
+  AdInterstitial adInterstitial = AdInterstitial();
 
   Future<void> reBuild() async {
     alarmList = await AlarmProvider.getData();
